@@ -1,13 +1,10 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { LogOutIcon } from "lucide-react";
-import { useLogout } from "@/features/auth/hooks/useLogout";
+import { ChatHeaderMenu } from "./ChatHeaderMenu";
 import { AvatarImage } from "@/components/shared/AvatarImage";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 
 export const ChatHeader = () => {
-    const { handleLogout } = useLogout();
     const { user, isLoading } = useCurrentUser();
 
     return (
@@ -24,16 +21,7 @@ export const ChatHeader = () => {
                     )}
                 </div>
                 <div className="flex items-center justify-end px-6 py-4">
-                    <Button
-                        variant="ghost"
-                        size="default"
-                        className="cursor-pointer"
-                        onClick={handleLogout}
-                    >
-                        <span className="flex items-center justify-center gap-2 text-gray-600">
-                            <LogOutIcon className="w-4 h-4" /> Logout
-                        </span>
-                    </Button>
+                    <ChatHeaderMenu />
                 </div>
             </div>
         </header>
