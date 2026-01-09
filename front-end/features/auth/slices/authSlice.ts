@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { signUpApi, loginApi, checkAuthApi } from '../services/authApi'
+import { signUpApi, loginApi, checkAuthApi, logoutApi } from '../services/authApi'
 import { SignUpData, LoginData, User, AuthStatus } from '../types/auth.types'
 
 
@@ -7,6 +7,7 @@ enum AuthActions {
     AUTH_SIGNUP = "auth/signup",
     AUTH_LOGIN = "auth/login",
     AUTH_CHECK = "auth/check",
+    AUTH_LOGOUT = "auth/logout"
 }
 
 export interface AuthState {
@@ -41,6 +42,14 @@ export const login = createAsyncThunk(AuthActions.AUTH_LOGIN, async (payload: Lo
 export const checkAuth = createAsyncThunk(AuthActions.AUTH_CHECK, async (_, { rejectWithValue }) => {
     try {
         return await checkAuthApi()
+    } catch (err: any) {
+        return rejectWithValue(err.response?.data?.message)
+    }
+})
+
+export const logout = createAsyncThunk(AuthActions.AUTH_LOGOUT, async (_, { rejectWithValue }) => {
+    try {
+        return await logoutApi()
     } catch (err: any) {
         return rejectWithValue(err.response?.data?.message)
     }
@@ -93,8 +102,32 @@ const authSlice = createSlice({
                 state.status = AuthStatus.UNAUTHENTICATED
                 state.error = action.payload as string
             })
+            //Logout
+            .addCase(logout.pending, (state) => {
+                state.status = AuthStatus.LOADING
+                state.error = null
+            })
+            .addCase(logout.fulfilled, (state) => {
+                state.user = null
+                state.status = AuthStatus.UNAUTHENTICATED
+            })
+            .addCase(logout.rejected, (state, action) => {
+                // Even if logout API fails, clear user locally
+                state.user = null
+                state.status = AuthStatus.UNAUTHENTICATED
+                state.error = action.payload as string
+            })
     }
 })
 
+
+// Selectors
+export const selectAuthUser = (state: { auth: AuthState }) => state.auth.user
+export const selectAuthStatus = (state: { auth: AuthState }) => state.auth.status
+export const selectAuthError = (state: { auth: AuthState }) => state.auth.error
+export const selectIsAuthenticated = (state: { auth: AuthState }) =>
+    state.auth.status === AuthStatus.AUTHENTICATED
+export const selectIsLoading = (state: { auth: AuthState }) =>
+    state.auth.status === AuthStatus.LOADING
 
 export default authSlice.reducer

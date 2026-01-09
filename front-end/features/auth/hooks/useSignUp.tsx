@@ -1,4 +1,5 @@
 "use client";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { AppDispatch, RootState } from "@/lib/store";
 import { useSelector } from "react-redux";
@@ -6,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { signUp } from "../slices/authSlice";
 import { ROUTES } from "@/constants/routes";
 import { AuthStatus } from "../types/auth.types";
+import type { SignUpData } from "../types/auth.types";
 
 export const useSignUp = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -16,11 +18,12 @@ export const useSignUp = () => {
 
   const displayError = error?.includes("Unauthorized") ? null : error;
 
-  const submit = async (data: any) => {
+  const submit = async (data: SignUpData) => {
     const result = await dispatch(signUp(data));
 
     if (signUp.fulfilled.match(result)) {
-      router.push(ROUTES.LOGIN);
+      // Redirect to home page since user is now authenticated
+      router.push(ROUTES.HOME_PAGE);
     }
   };
 

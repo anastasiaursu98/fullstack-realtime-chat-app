@@ -68,7 +68,7 @@ export const AppLogo = ({
           size === "md" && "px-2"
         )}
       >
-        StoryLine
+        QuickTalk
       </span>
     </h1>
   );

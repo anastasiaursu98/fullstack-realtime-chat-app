@@ -1,7 +1,10 @@
+import { ChatView } from "@/features/chat/components/chat-view/ChatView";
+import { ChatLayout } from "@/features/chat/layouts/ChatLayout";
 
-import { Chat } from "@/features/chat/components/Chat";
 export default function Home() {
   return (
-    <Chat />
-  )
+    <ChatLayout>
+      <ChatView />
+    </ChatLayout>
+  );
 }

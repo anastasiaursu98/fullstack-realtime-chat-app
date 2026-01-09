@@ -3,6 +3,7 @@ import { Kaushan_Script, Roboto } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "@/provider/ReduxProvider";
 import AuthProvider from "@/provider/AuthProvider";
+import { MainLayout } from "@/layouts/MainLayout";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -33,7 +34,7 @@ export default function RootLayout({
       >
         <ReduxProvider>
           <AuthProvider>
-            {children}
+            <MainLayout>{children}</MainLayout>
           </AuthProvider>
         </ReduxProvider>
       </body>
