@@ -4,6 +4,7 @@ import "./globals.css";
 import ReduxProvider from "@/provider/ReduxProvider";
 import AuthProvider from "@/provider/AuthProvider";
 import { MainLayout } from "@/layouts/MainLayout";
+import { Toaster } from "@/components/ui/sonner";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -36,6 +37,7 @@ export default function RootLayout({
           <AuthProvider>
             <MainLayout>{children}</MainLayout>
           </AuthProvider>
+          <Toaster position="top-center" richColors />
         </ReduxProvider>
       </body>
     </html>

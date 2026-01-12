@@ -14,6 +14,8 @@ export type User = {
     fullName: string;
     email: string;
     profilePic: string;
+    createdAt: string;
+    updatedAt: string;
 }
 
 export enum AuthStatus {

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { signUpApi, loginApi, checkAuthApi, logoutApi } from '../services/authApi'
+import { signUpApi, loginApi, checkAuthApi, logoutApi, updateProfilePicApi } from '../services/authApi'
 import { SignUpData, LoginData, User, AuthStatus } from '../types/auth.types'
 
 
@@ -7,7 +7,8 @@ enum AuthActions {
     AUTH_SIGNUP = "auth/signup",
     AUTH_LOGIN = "auth/login",
     AUTH_CHECK = "auth/check",
-    AUTH_LOGOUT = "auth/logout"
+    AUTH_LOGOUT = "auth/logout",
+    AUTH_UPDATE_PROFILE_PIC = "auth/update-profile-pic"
 }
 
 export interface AuthState {
@@ -54,6 +55,15 @@ export const logout = createAsyncThunk(AuthActions.AUTH_LOGOUT, async (_, { reje
         return rejectWithValue(err.response?.data?.message)
     }
 })
+
+export const updateProfilePic = createAsyncThunk(AuthActions.AUTH_UPDATE_PROFILE_PIC, async (payload: string, { rejectWithValue }) => {
+    try {
+        return await updateProfilePicApi(payload)
+    } catch (err: any) {
+        return rejectWithValue(err.response?.data?.message)
+    }
+})
+
 const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -116,6 +126,14 @@ const authSlice = createSlice({
                 state.user = null
                 state.status = AuthStatus.UNAUTHENTICATED
                 state.error = action.payload as string
+            })
+
+            //UpdateProfilePic
+            .addCase(updateProfilePic.fulfilled, (state, action) => {
+                state.status = AuthStatus.AUTHENTICATED
+                if (state.user) {
+                    state.user.profilePic = action.payload.profilePic
+                }
             })
     }
 })

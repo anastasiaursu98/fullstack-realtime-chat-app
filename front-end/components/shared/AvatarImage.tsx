@@ -1,4 +1,5 @@
 import Image from "next/image";
+import defaultAvatar from "../../assets/images/avatar.png";
 
 interface AvatarImageProps {
   src?: string;
@@ -17,6 +18,8 @@ export const AvatarImage = ({
   className = "",
   showAvatarImageButton = true,
 }: AvatarImageProps) => {
+
+
   const ring = hasStory
     ? "p-[2px] bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600"
     : "p-[2px] bg-gray-300";
@@ -29,7 +32,7 @@ export const AvatarImage = ({
       >
         <div className="bg-white rounded-full w-full h-full p-[2px]">
           <Image
-            src={src || "/fallback-avatar.png"}
+            src={src || defaultAvatar}
             alt={alt}
             width={size}
             height={size}
