@@ -6,16 +6,16 @@ import { Camera } from "lucide-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";;
-import { updateProfilePic } from "@/features/auth/slices/authSlice";
+import { updateProfilePic } from "@/features/auth/slices/authThunks";
 import { useAppDispatch } from "@/lib/store";
 import { toast } from "sonner";
-
+import { AuthStatus } from "@/features/auth/types/auth.types";
 
 export const AvatarImageProfile = () => {
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
     const dispatch = useAppDispatch()
-
+    const isLoading = useSelector((state: RootState) => state.auth.updateProfilePicStatus === AuthStatus.LOADING);
     const profilePic = useSelector(
         (state: RootState) => state.auth.user?.profilePic
     )
@@ -66,7 +66,7 @@ export const AvatarImageProfile = () => {
             </div>
             <div className="text-center">
                 <h3 className="text-sm font-medium text-gray-900">Profile Photo</h3>
-                <p className="text-xs text-muted-foreground mt-1">Click the camera icon to upload</p>
+                <p className="text-xs text-muted-foreground mt-1">{isLoading ? "Uploading..." : "Click the camera icon to upload"}</p>
             </div>
         </div>
     );

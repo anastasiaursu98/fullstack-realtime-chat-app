@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import { AppDispatch } from "@/lib/store";
 import { useDispatch } from "react-redux";
-import { logout } from "../slices/authSlice";
+import { logout } from "../slices/authThunks";
 import { ROUTES } from "@/constants/routes";
 
 export const useLogout = () => {

@@ -49,7 +49,7 @@ export const LoginForm = () => {
     submit(data);
   }, [submit]);
   return (
-    <AuthCard title="Sign In" error={error || errors.email?.message || errors.password?.message}>
+    <AuthCard title="Sign In" error={error || ''}>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 w-full">
         <InputField
           disabled={isLoading}
