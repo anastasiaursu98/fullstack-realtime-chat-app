@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Form, FormField, FormItem } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import { RootState, useAppSelector } from "@/lib/store";
+import { useAppSelector } from "@/lib/store";
 import { selectAuthUser } from "@/features/auth/slices/authSelectors";
 
 export const UserInfo = memo(() => {

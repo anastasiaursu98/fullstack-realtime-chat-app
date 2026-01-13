@@ -5,20 +5,18 @@ import { ChatSearchBar } from "./ChatSearchBar";
 import { useAppSelector } from "@/lib/store";
 import { useAppDispatch } from "@/lib/store";
 import { getChatUsers } from "../../../slices/chatThunks";
-import { useRouter } from "next/navigation";
 
 export const ChatSidebarContents = () => {
 
   const dispatch = useAppDispatch();
   const users = useAppSelector((state) => state.chat.users);
-  const router = useRouter();
+
+  const onlineUsers = useAppSelector((state) => state.auth.onlineUsers);
+
   useEffect(() => {
     dispatch(getChatUsers());
   }, [dispatch]);
 
-  const handleChatClick = (chatId: string) => {
-    router.push(`/chat/${chatId}`);
-  };
 
   return (
     <div className="flex flex-col h-full">
@@ -38,7 +36,7 @@ export const ChatSidebarContents = () => {
           <ChatListItem
             key={index}
             user={user}
-            onClick={handleChatClick}
+            online={onlineUsers?.includes(user._id as any)}
           />
         ))}
       </div>

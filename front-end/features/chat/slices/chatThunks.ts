@@ -12,8 +12,8 @@ export const getChatUsers = createAsyncThunk(ChatActions.GET_CHAT_USERS, async (
     try {
         const response = await api.get("/messages/users");
         return response.data;
-    } catch (error) {
-        return rejectWithValue(error);
+    } catch (error: any) {
+        return rejectWithValue(error.response?.data || error.message);
     }
 })
 
@@ -21,8 +21,8 @@ export const getChatMessages = createAsyncThunk(ChatActions.GET_CHAT_MESSAGES, a
     try {
         const response = await api.get(`/messages/${id}`);
         return response.data;
-    } catch (error) {
-        return rejectWithValue(error);
+    } catch (error: any) {
+        return rejectWithValue(error.response?.data || error.message);
     }
 })
 
@@ -30,7 +30,7 @@ export const sendMessage = createAsyncThunk(ChatActions.SEND_MESSAGE, async ({ t
     try {
         const response = await api.post(`/messages/send/${chatId}`, { text, image })
         return response.data;
-    } catch (error) {
-        return rejectWithValue(error);
+    } catch (error: any) {
+        return rejectWithValue(error.response?.data || error.message);
     }
 })

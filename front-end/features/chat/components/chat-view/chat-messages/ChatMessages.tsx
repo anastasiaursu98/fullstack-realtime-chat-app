@@ -1,18 +1,19 @@
 import { Message } from "../../../types/chat";
 import { MessageBubble } from "./MessageBubble";
 import { NoChatMessages } from "./NoChatMessages";
+import { useAppSelector } from "@/lib/store";
 
 export interface ChatMessagesProps {
     messages: Message[];
     isLoading?: boolean;
-    chatId?: string;
 }
 
 export const ChatMessages = ({
     messages,
     isLoading = false,
-    chatId,
 }: ChatMessagesProps) => {
+    const user = useAppSelector((state) => state.auth.user);
+
     if (isLoading) {
         return (
             <div className="flex justify-center items-center h-full">
@@ -32,7 +33,12 @@ export const ChatMessages = ({
     return (
         <div className="flex flex-col gap-2">
             {messages?.map((msg, index) => (
-                <MessageBubble key={index} message={msg} showTimestamp isMine={msg.senderId === chatId} />
+                <MessageBubble
+                    key={index}
+                    message={msg}
+                    showTimestamp
+                    isMine={msg.senderId === user?._id}
+                />
             ))}
         </div>
     );

@@ -25,6 +25,8 @@ export interface AuthState {
     // Update Profile Pic
     updateProfilePicStatus: AuthStatus;
     updateProfilePicError: string | null;
+
+    onlineUsers: User[] | null;
 }
 
 const initialState: AuthState = {
@@ -45,6 +47,8 @@ const initialState: AuthState = {
 
     updateProfilePicStatus: AuthStatus.IDLE,
     updateProfilePicError: null,
+
+    onlineUsers: []
 }
 
 
@@ -59,6 +63,9 @@ const authSlice = createSlice({
             state.loginError = null;
             state.updateProfilePicStatus = AuthStatus.IDLE;
             state.updateProfilePicError = null;
+        },
+        setOnlineUsres: (state, action) => {
+            state.onlineUsers = action.payload
         }
     },
     extraReducers(builder) {
@@ -152,5 +159,5 @@ const authSlice = createSlice({
     }
 })
 
-export const { resetAuthStatus } = authSlice.actions;
+export const { resetAuthStatus, setOnlineUsres } = authSlice.actions;
 export default authSlice.reducer
