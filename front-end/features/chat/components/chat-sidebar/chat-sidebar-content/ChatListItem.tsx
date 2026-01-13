@@ -2,14 +2,23 @@
 
 import { AvatarImage } from "@/components/shared/AvatarImage";
 import { cn } from "@/lib/utils";
-import { ChatListItemProps } from "../../../types";
+import { User } from "@/features/auth/types/auth.types";
+
+
+export interface ChatListItemProps {
+    user: User;
+    isActive?: boolean;
+    onClick?: (chatId: string) => void;
+}
 
 export const ChatListItem = ({
-    chat,
+    user,
     isActive = false,
     onClick,
 }: ChatListItemProps) => {
-    const handleClick = () => onClick?.(chat.id);
+
+
+    const handleClick = () => onClick?.(user._id);
 
     return (
         <div
@@ -22,30 +31,33 @@ export const ChatListItem = ({
             {/* Avatar */}
             <div className="relative flex-shrink-0">
                 <AvatarImage
-                    src={chat.avatar || ""}
-                    alt={chat.name}
+                    src={user.profilePic || ""}
+                    alt={user.fullName}
                     size={56}
                     showAvatarImageButton={false}
                 />
-                {chat.isOnline && (
-                    <div className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-white rounded-full" />
-                )}
+
+                {/* Online indicator */}
+                <span className="absolute bottom-0 right-0 flex h-4 w-4">
+                    <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping"></span>
+                    <span className="relative inline-flex h-4 w-4 rounded-full bg-green-500 border-2 border-white"></span>
+                </span>
             </div>
 
             {/* Chat info */}
             <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between mb-1">
-                    <span className={cn("truncate", chat.isUnread && "font-semibold")}>
-                        {chat.name}
+                    <span className={cn("truncate font-semibold")}>
+                        {user.fullName}
                     </span>
 
                     <div className="flex items-center gap-1 flex-shrink-0 ml-2">
-                        <span className="text-xs text-gray-500">{chat.timestamp}</span>
+                        {/* <span className="text-xs text-gray-500">{user.lastMessage}</span> */}
                     </div>
                 </div>
 
                 <div className="flex items-center justify-between gap-2">
-                    <p className={cn(
+                    {/* <p className={cn(
                         "text-xs truncate text-gray-500",
                         chat.isUnread && "font-medium text-gray-900"
                     )}>
@@ -56,7 +68,7 @@ export const ChatListItem = ({
                         <span className="flex-shrink-0 bg-blue-500 text-white text-xs rounded-full px-2 py-0.5 min-w-[20px] text-center">
                             {chat.unreadCount}
                         </span>
-                    )}
+                    )} */}
                 </div>
             </div>
         </div>

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { signUpApi, loginApi, checkAuthApi, logoutApi, updateProfilePicApi } from "../services/authApi";
-import { SignUpData, LoginData } from "../types/auth.types";
+import { checkAuthApi, loginApi, logoutApi, signUpApi, updateProfilePicApi } from "../services/authApi";
+import { LoginData, SignUpData } from "../types/auth.types";
 
 export enum AuthActions {
     AUTH_SIGNUP = "auth/signup",

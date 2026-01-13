@@ -1,49 +1,39 @@
 "use client";
 
+import { useEffect, useCallback } from "react";
+import { usePathname } from "next/navigation";
 import { ChatMessages } from "./chat-messages/ChatMessages";
 import { ChatInput } from "./ChatInput";
-import { Message } from "../../types";
+import { useAppDispatch, useAppSelector } from "@/lib/store";
+import { getChatMessages, sendMessage } from "../../slices/chatThunks";
 
 export const ChatView = () => {
-    // Mock messages for demonstration
-    const mockMessages: Message[] = [
-        {
-            id: "1",
-            text: "Hello! How are you?",
-            senderId: "1",
-            isMine: true,
-            createdAt: new Date(Date.now() - 3600000).toISOString(),
-            status: "sent",
-        },
-        {
-            id: "2",
-            text: "Hi! I'm doing great, thanks for asking!",
-            senderId: "2",
-            isMine: false,
-            createdAt: new Date(Date.now() - 3000000).toISOString(),
-            status: "sent",
-        },
-        {
-            id: "3",
-            text: "That's wonderful to hear! What have you been up to?",
-            senderId: "1",
-            isMine: true,
-            createdAt: new Date(Date.now() - 1800000).toISOString(),
-            status: "sent",
-        },
-    ];
+    const dispatch = useAppDispatch();
+    const messages = useAppSelector((state) => state.chat.messages);
 
-    const handleSendMessage = (message: string) => {
-        console.log('Sending message:', message);
-        // TODO: Implement actual message sending logic
-    };
+    const pathname = usePathname();
+    const chatId = pathname.split("/").pop();
+
+    useEffect(() => {
+        if (chatId) {
+            dispatch(getChatMessages(chatId));
+        }
+    }, [dispatch, chatId]);
+
+    const handleSendMessage = useCallback(
+        (message: string) => {
+            if (!chatId) return;
+            dispatch(sendMessage({ text: message, chatId }));
+        },
+        [dispatch, chatId]
+    );
 
     return (
         <div className="flex h-full flex-col">
             <div className="flex-1 overflow-y-auto p-4">
-                <ChatMessages messages={mockMessages} />
+                <ChatMessages messages={messages} chatId={chatId} />
             </div>
-            <ChatInput onSendMessage={handleSendMessage} />
+            <ChatInput onSubmit={handleSendMessage} />
         </div>
     );
 };

@@ -10,7 +10,7 @@ export function ChatLayout({ children }: { children: React.ReactNode }) {
             <ChatSidebar />
             <SidebarInset>
                 <ChatHeader />
-                <main className="flex-1 overflow-y-auto py-8 px-2 md:px-4 lg:px-12">
+                <main className="flex-1 flex flex-col overflow-y-auto py-8 px-2 md:px-4 lg:px-12">
                     {children}
                 </main>
             </SidebarInset>

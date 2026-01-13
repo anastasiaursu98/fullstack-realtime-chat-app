@@ -4,21 +4,20 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Camera } from "lucide-react";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "@/lib/store";
 import { RootState } from "@/lib/store";;
 import { updateProfilePic } from "@/features/auth/slices/authThunks";
 import { useAppDispatch } from "@/lib/store";
 import { toast } from "sonner";
-import { AuthStatus } from "@/features/auth/types/auth.types";
+import { selectAuthUser } from "@/features/auth/slices/authSelectors";
+import { selectIsLoading } from "@/features/auth/slices/authSelectors";
 
 export const AvatarImageProfile = () => {
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
     const dispatch = useAppDispatch()
-    const isLoading = useSelector((state: RootState) => state.auth.updateProfilePicStatus === AuthStatus.LOADING);
-    const profilePic = useSelector(
-        (state: RootState) => state.auth.user?.profilePic
-    )
+    const isLoading = useAppSelector(selectIsLoading);
+    const profilePic = useAppSelector(selectAuthUser)?.profilePic;
 
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];

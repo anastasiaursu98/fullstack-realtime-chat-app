@@ -1,10 +1,17 @@
+import { Message } from "../../../types/chat";
 import { MessageBubble } from "./MessageBubble";
-import { ChatMessagesProps } from "../../../types";
+import { NoChatMessages } from "./NoChatMessages";
+
+export interface ChatMessagesProps {
+    messages: Message[];
+    isLoading?: boolean;
+    chatId?: string;
+}
 
 export const ChatMessages = ({
     messages,
     isLoading = false,
-    onLoadMore
+    chatId,
 }: ChatMessagesProps) => {
     if (isLoading) {
         return (
@@ -14,19 +21,18 @@ export const ChatMessages = ({
         );
     }
 
-    if (messages.length === 0) {
+    if (messages?.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center h-full text-gray-500">
-                <p className="text-lg font-medium">No messages yet</p>
-                <p className="text-sm mt-1">Start a conversation!</p>
+                <NoChatMessages />
             </div>
         );
     }
 
     return (
         <div className="flex flex-col gap-2">
-            {messages.map((msg) => (
-                <MessageBubble key={msg.id} message={msg} showTimestamp />
+            {messages?.map((msg, index) => (
+                <MessageBubble key={index} message={msg} showTimestamp isMine={msg.senderId === chatId} />
             ))}
         </div>
     );

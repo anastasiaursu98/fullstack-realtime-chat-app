@@ -1,44 +1,23 @@
 "use client";
+import { useEffect } from "react";
 import { ChatListItem } from "./ChatListItem";
 import { ChatSearchBar } from "./ChatSearchBar";
-import { Chat } from "../../../types";
+import { useAppSelector } from "@/lib/store";
+import { useAppDispatch } from "@/lib/store";
+import { getChatUsers } from "../../../slices/chatThunks";
+import { useRouter } from "next/navigation";
 
 export const ChatSidebarContents = () => {
-  // Mock chat data - replace with real data later
-  const CHATS: Chat[] = [
-    {
-      id: "1",
-      name: "Echipa Racheta",
-      lastMessage: "Vasile sent an attachment",
-      timestamp: "38m",
-      avatar: '',
-      isUnread: true,
-      isMuted: true,
-      hasStory: false,
-      unreadCount: 2,
-    },
-    {
-      id: "2",
-      name: "Daniela Burduniuc",
-      lastMessage: "Dar fara sa probez, greu",
-      timestamp: "5h",
-      avatar: '',
-      isOnline: true,
-      hasStory: false,
-    },
-    {
-      id: "3",
-      name: "Ami",
-      lastMessage: "Active 2h ago",
-      timestamp: "2h",
-      avatar: '',
-      hasStory: false,
-    },
-  ];
+
+  const dispatch = useAppDispatch();
+  const users = useAppSelector((state) => state.chat.users);
+  const router = useRouter();
+  useEffect(() => {
+    dispatch(getChatUsers());
+  }, [dispatch]);
 
   const handleChatClick = (chatId: string) => {
-    console.log('Chat clicked:', chatId);
-    // TODO: Implement chat selection logic
+    router.push(`/chat/${chatId}`);
   };
 
   return (
@@ -54,11 +33,11 @@ export const ChatSidebarContents = () => {
       </div>
 
       {/* Chat List */}
-      <div className="flex-1 overflow-y-auto">
-        {CHATS.map((chat) => (
+      <div className="flex-1 overflow-y-auto pt-4">
+        {users?.map((user, index) => (
           <ChatListItem
-            key={chat.id}
-            chat={chat}
+            key={index}
+            user={user}
             onClick={handleChatClick}
           />
         ))}

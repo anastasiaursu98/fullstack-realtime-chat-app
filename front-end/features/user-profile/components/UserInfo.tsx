@@ -3,17 +3,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Form, FormField, FormItem } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import { RootState } from "@/lib/store";
-import { useSelector } from "react-redux";
+import { RootState, useAppSelector } from "@/lib/store";
+import { selectAuthUser } from "@/features/auth/slices/authSelectors";
 
 export const UserInfo = memo(() => {
-    const fullName = useSelector(
-        (state: RootState) => state.auth.user?.fullName
-    );
+    const fullName = useAppSelector(
+        selectAuthUser
+    )?.fullName;
 
-    const email = useSelector(
-        (state: RootState) => state.auth.user?.email
-    );
+    const email = useAppSelector(
+        selectAuthUser
+    )?.email;
 
     const form = useForm({
         defaultValues: {

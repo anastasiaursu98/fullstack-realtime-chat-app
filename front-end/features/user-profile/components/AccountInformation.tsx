@@ -1,11 +1,11 @@
 import { useSelector } from "react-redux";
-import { RootState } from "@/lib/store";
-import React, { memo, useMemo } from "react";
+import { memo, useMemo } from "react";
+import { selectAuthUser } from "@/features/auth/slices/authSelectors";
 
 export const AccountInformation = memo(() => {
-    const createdAt = useSelector(
-        (state: RootState) => state.auth.user?.createdAt
-    );
+    const user = useSelector(selectAuthUser);
+
+    const createdAt = user?.createdAt;
 
     const joinedDate = useMemo(() => {
         return createdAt

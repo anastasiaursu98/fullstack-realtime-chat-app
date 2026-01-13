@@ -1,0 +1,21 @@
+export interface Message {
+    senderId: string;
+    receiverId: string;
+    text: string;
+    image: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export enum ChatStatus {
+    IDLE = 'idle',
+    LOADING = 'loading',
+    SUCCEEDED = 'succeeded',
+    FAILED = 'failed'
+}
+
+export type SendMessagePayload = {
+    text: string;
+    chatId: string;
+    image?: string;
+}
