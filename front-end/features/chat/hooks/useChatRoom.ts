@@ -14,17 +14,22 @@ import { Message } from "../types/chat";
  * @returns {Message[]} messages - Array of chat messages
  * @returns {Function} sendMessage - Function to send a new message
  */
+
 export const useChatRoom = () => {
     const dispatch = useAppDispatch();
     const messages = useAppSelector((state) => state.chat.messages);
     const { socket } = useSocket();
     const { id: chatId } = useParams<{ id: string }>();
 
+
+    console.log(chatId);
+
     useEffect(() => {
         if (!socket) return;
 
         const handleNewMessage = (message: Message) => {
-            if (message._id === chatId) {
+
+            if (message.senderId === chatId) {
                 dispatch(addMessage(message));
             }
         };
