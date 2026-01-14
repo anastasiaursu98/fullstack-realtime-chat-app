@@ -20,29 +20,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
     cors({
-        origin: (origin, callback) => {
-            const allowedOrigins = [
-                process.env.FRONTEND_URL,
-                /\.vercel\.app$ /, // Allow all Vercel preview deployments
-            ];
-
-            // Allow requests with no origin (like mobile apps or curl requests)
-            if (!origin) return callback(null, true);
-
-            const isAllowed = allowedOrigins.some((allowed) => {
-                if (typeof allowed === "string") {
-                    return allowed === origin;
-                }
-                // For regex patterns
-                return allowed.test(origin);
-            });
-
-            if (isAllowed) {
-                callback(null, true);
-            } else {
-                callback(new Error("Not allowed by CORS"));
-            }
-        },
+        origin: process.env.FRONTEND_URL,
         credentials: true,
     })
 );
