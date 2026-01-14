@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { Kaushan_Script, Roboto } from "next/font/google";
 import "./globals.css";
-import { MainLayout } from "@/layouts/MainLayout";
 import { Toaster } from "@/components/ui/sonner";
-import ReduxProvider from "@/provider/ReduxProvider";
-import AuthProvider from "@/provider/AuthProvider";
-import { SocketProvider } from "@/provider/SocketProvider";
+import ReduxProvider from "@/lib/providers/ReduxProvider";
+import AuthProvider from "@/features/auth/providers/AuthProvider";
+import { SocketProvider } from "@/features/chat/providers/SocketProvider";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -37,7 +36,7 @@ export default function RootLayout({
         <ReduxProvider>
           <AuthProvider>
             <SocketProvider>
-              <MainLayout>{children}</MainLayout>
+              {children}
             </SocketProvider>
           </AuthProvider>
           <Toaster position="top-center" richColors />

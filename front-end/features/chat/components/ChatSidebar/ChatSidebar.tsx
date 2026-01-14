@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/sidebar";
 
 import { ChatSidebarHeader } from "./ChatSidebarHeader";
-import { ChatSidebarContents } from "./chat-sidebar-content/ChatSidebarContents";
+import { ChatSidebarContent } from "./ChatSidebarContent";
 
 export const ChatSidebar = () => {
   return (
@@ -20,7 +20,7 @@ export const ChatSidebar = () => {
         <ChatSidebarHeader />
       </SidebarHeader>
       <SidebarContent>
-        <ChatSidebarContents />
+        <ChatSidebarContent />
       </SidebarContent>
 
     </Sidebar>

@@ -8,10 +8,10 @@ import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { ROUTES } from "@/constants/routes";
 
-import { AuthCard } from "../commun/AuthCard";
-import { AuthFooter } from "../commun/AuthFooter";
-import { InputField } from "../commun/InputField";
-import { useSignUp } from "../../hooks/useSignUp";
+import { AuthCard } from "./AuthCard";
+import { AuthFooter } from "./AuthFooter";
+import { InputField } from "./InputField";
+import { useSignUp } from "../hooks/useSignUp";
 
 const registerSchema = z
   .object({

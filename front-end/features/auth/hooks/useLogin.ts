@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { login } from "../slices/authThunks";
 import { selectIsLoginLoading, selectLoginError } from "../slices/authSelectors";
 import { ROUTES } from "@/constants/routes";
-import { LoginSchema } from "../components/login/LoginForm";
+import { LoginForm, LoginSchema } from "@/features/auth/components/LoginForm";
 
 
 export const useLogin = () => {

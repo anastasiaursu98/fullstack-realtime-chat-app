@@ -1,4 +1,4 @@
-import AuthLayout from "@/layouts/auth/AuthLayout";
+import AuthLayout from "@/features/auth/layouts/AuthLayout";
 
 export default function AuthLayoutWrapper({
     children,

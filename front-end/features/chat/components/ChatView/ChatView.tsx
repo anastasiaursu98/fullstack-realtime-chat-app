@@ -1,6 +1,6 @@
 "use client";
 
-import { ChatMessages } from "./chat-messages/ChatMessages";
+import { ChatMessages } from "./ChatMessages";
 import { ChatInput } from "./ChatInput";
 import { useChatRoom } from "../../hooks/useChatRoom";
 

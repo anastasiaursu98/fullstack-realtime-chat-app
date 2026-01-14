@@ -1,8 +1,8 @@
 "use client";
 
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { ChatHeader } from "../../features/chat/components/chat-header/ChatHeader";
-import { ChatSidebar } from "../../features/chat/components/chat-sidebar/ChatSidebar";
+import { ChatHeader } from "@/features/chat/components/ChatHeader";
+import { ChatSidebar } from "@/features/chat/components/ChatSidebar/ChatSidebar";
 
 export function ChatLayout({ children }: { children: React.ReactNode }) {
     return (

@@ -1,6 +1,6 @@
 "use client";
 import { Profile } from "@/features/user-profile/components/Profile";
-import { ChatLayout } from "@/layouts/chat/ChatLayout";
+import { ChatLayout } from "@/features/chat/layouts/ChatLayout";
 
 
 export default function ProfilePage() {

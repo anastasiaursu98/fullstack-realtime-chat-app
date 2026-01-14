@@ -1,7 +1,7 @@
 import { useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/store";
-import { useSocket } from "@/provider/SocketProvider";
+import { useSocket } from "@/features/chat/providers/SocketProvider";
 import { getChatMessages, sendMessage } from "../slices/chatThunks";
 import { addMessage } from "../slices/chatSlice";
 import { Message } from "../types/chat";

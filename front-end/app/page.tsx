@@ -1,4 +1,4 @@
-import { ChatLayout } from "@/layouts/chat/ChatLayout";
+import { ChatLayout } from "@/features/chat/layouts/ChatLayout";
 import { NoChatMessages } from "@/components/shared/NoChatMessages";
 
 export default function Home() {

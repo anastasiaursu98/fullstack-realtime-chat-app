@@ -5,15 +5,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, LockIcon, UserIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useCallback } from "react";
-import { AuthCard } from "../commun/AuthCard";
-import { InputField } from "../commun/InputField";
+import { AuthCard } from "./AuthCard";
+import { InputField } from "./InputField";
 import { DividerWithText } from "./DividerWithText";
 import { FormActions } from "./FormActions";
 
 import { ROUTES } from "@/constants/routes";
 import * as z from "zod";
-import { AuthFooter } from "../commun/AuthFooter";
-import { useLogin } from "../../hooks/useLogin";
+import { AuthFooter } from "./AuthFooter";
+import { useLogin } from "../hooks/useLogin";
 
 export const loginSchema = z.object({
   email: z

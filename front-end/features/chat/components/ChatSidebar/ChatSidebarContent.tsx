@@ -4,9 +4,9 @@ import { ChatListItem } from "./ChatListItem";
 import { ChatSearchBar } from "./ChatSearchBar";
 import { useAppSelector } from "@/lib/store";
 import { useAppDispatch } from "@/lib/store";
-import { getChatUsers } from "../../../slices/chatThunks";
+import { getChatUsers } from "../../slices/chatThunks";
 
-export const ChatSidebarContents = () => {
+export const ChatSidebarContent = () => {
 
   const dispatch = useAppDispatch();
   const users = useAppSelector((state) => state.chat.users);
