@@ -1,6 +1,14 @@
 import { MessageSquare } from "lucide-react";
 
-export const NoChatMessages = () => {
+interface NoChatMessagesProps {
+    title?: string;
+    description?: string;
+}
+
+export const NoChatMessages = ({
+    title = "No messages yet",
+    description = "Start a conversation!"
+}: NoChatMessagesProps) => {
     return (
         <div className="w-full flex flex-1 flex-col items-center justify-center bg-base-100/50">
             <div className="max-w-md text-center space-y-6">
@@ -17,9 +25,9 @@ export const NoChatMessages = () => {
                 </div>
 
                 {/* Welcome Text */}
-                <h2 className="text-2xl font-semibold text-gray-700">No messages yet</h2>
+                <h2 className="text-2xl font-semibold text-gray-700">{title}</h2>
                 <p className="text-gray-500">
-                    Start a conversation!
+                    {description}
                 </p>
             </div>
         </div>

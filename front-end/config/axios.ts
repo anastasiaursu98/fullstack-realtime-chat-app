@@ -7,3 +7,13 @@ export const api = axios.create({
         "Content-Type": "application/json",
     },
 });
+
+// Response interceptor for global error handling
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        // You can add global error handling here if needed
+        // For example, logging or showing notifications
+        return Promise.reject(error);
+    }
+);

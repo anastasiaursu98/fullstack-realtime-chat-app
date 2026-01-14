@@ -1,5 +1,6 @@
 import Message from "../models/message.model.js";
 import User from "../models/user.model.js";
+import mongoose from "mongoose";
 
 
 import cloudinary from "../lib/cloudinary.js";
@@ -7,17 +8,71 @@ import { getReceiverSocketId, io } from "../lib/socket.js";
 
 export const getUsersForSideBar = async (req, res) => {
     try {
-        const loggedInUserId = req.user.id;
-        const filtredUsers = await User.find({
-            _id: { $ne: loggedInUserId }
-        }).select("-password");
+        const loggedInUserId = new mongoose.Types.ObjectId(req.user.id);
 
-        res.status(200).json(filtredUsers);
+        const users = await User.aggregate([
+            {
+                $match: {
+                    _id: { $ne: loggedInUserId }
+                }
+            },
 
-    }
-    catch (error) {
-        console.log("Error fetching users", error);
-        res.status(500).json({ message: error.message });
+            {
+                $lookup: {
+                    from: "messages",
+                    let: { userId: "$_id" },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $or: [
+                                        {
+                                            $and: [
+                                                { $eq: ["$senderId", loggedInUserId] },
+                                                { $eq: ["$receiverId", "$$userId"] }
+                                            ]
+                                        },
+                                        {
+                                            $and: [
+                                                { $eq: ["$senderId", "$$userId"] },
+                                                { $eq: ["$receiverId", loggedInUserId] }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        { $sort: { createdAt: -1 } },
+                        { $limit: 1 }
+                    ],
+                    as: "lastMessage"
+                }
+            },
+
+            {
+                $addFields: {
+                    lastMessage: { $arrayElemAt: ["$lastMessage", 0] }
+                }
+            },
+
+            {
+                $sort: {
+                    "lastMessage.createdAt": -1
+                }
+            },
+
+            {
+                $project: {
+                    password: 0
+                }
+            }
+        ]);
+
+        res.status(200).json(users);
+
+    } catch (error) {
+        console.log("Error in getSidebarUsers:", error.message);
+        res.status(500).json({ error: "Internal server error" });
     }
 };
 
@@ -76,3 +131,20 @@ export const sendMessage = async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 };
+
+export const getChatUser = async (req, res) => {
+    try {
+        const { id: chatUserId } = req.params;
+
+        const user = await User.findById(chatUserId).select("-password");
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json(user);
+    } catch (error) {
+        console.log("Error in getChatUser controller: ", error.message);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}

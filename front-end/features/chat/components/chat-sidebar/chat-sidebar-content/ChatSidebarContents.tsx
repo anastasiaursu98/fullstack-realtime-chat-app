@@ -24,7 +24,7 @@ export const ChatSidebarContents = () => {
       <ChatSearchBar />
 
       {/* Messages / Requests Tabs */}
-      <div className="flex border-b border-gray-200">
+      <div className="flex border-b border-gray-200 px-4">
         <div className="flex-1 py-3">
           <p className="text-base font-semibold">Messages</p>
         </div>
@@ -32,11 +32,11 @@ export const ChatSidebarContents = () => {
 
       {/* Chat List */}
       <div className="flex-1 overflow-y-auto pt-4">
-        {users?.map((user, index) => (
+        {users?.map((user) => (
           <ChatListItem
-            key={index}
+            key={user._id}
             user={user}
-            online={onlineUsers?.includes(user._id as any)}
+            online={onlineUsers?.includes(user._id)}
           />
         ))}
       </div>

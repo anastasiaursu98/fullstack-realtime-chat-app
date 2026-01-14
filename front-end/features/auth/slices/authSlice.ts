@@ -26,7 +26,7 @@ export interface AuthState {
     updateProfilePicStatus: AuthStatus;
     updateProfilePicError: string | null;
 
-    onlineUsers: User[] | null;
+    onlineUsers: string[] | null; // Array of user IDs
 }
 
 const initialState: AuthState = {
@@ -64,7 +64,7 @@ const authSlice = createSlice({
             state.updateProfilePicStatus = AuthStatus.IDLE;
             state.updateProfilePicError = null;
         },
-        setOnlineUsres: (state, action) => {
+        setOnlineUsers: (state, action) => {
             state.onlineUsers = action.payload
         }
     },
@@ -159,5 +159,5 @@ const authSlice = createSlice({
     }
 })
 
-export const { resetAuthStatus, setOnlineUsres } = authSlice.actions;
+export const { resetAuthStatus, setOnlineUsers } = authSlice.actions;
 export default authSlice.reducer

@@ -2,7 +2,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { ReactNode } from "react";
 import { io, Socket } from "socket.io-client";
-import { useAppDispatch, useAppSelector } from "@/lib/store"; import { setOnlineUsres } from "@/features/auth/slices/authSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/store"; import { setOnlineUsers } from "@/features/auth/slices/authSlice";
 ;
 
 type SocketContextValue = {
@@ -28,7 +28,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
             setSocket(socketInstance);
             // Listen for online users
             socketInstance.on("getOnlineUsers", (users) => {
-                dispatch(setOnlineUsres(users))
+                dispatch(setOnlineUsers(users))
             });
             return () => {
                 socketInstance.close();

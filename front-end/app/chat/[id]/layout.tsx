@@ -1,4 +1,4 @@
-import { ChatLayout } from "@/features/chat/layouts/ChatLayout";
+import { ChatLayout } from "@/layouts/chat/ChatLayout";
 
 export default function ChatLayoutWrapper({
     children,

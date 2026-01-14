@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 export const ChatSearchBar = () => {
     return (
-        <div className="px-0.5 py-2">
+        <div className="px-4 py-2">
             <div className="relative group">
                 <Search
                     className={cn(

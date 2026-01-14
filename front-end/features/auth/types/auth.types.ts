@@ -1,3 +1,5 @@
+import { Message } from "../../chat/types/chat";
+
 export type SignUpData = {
     fullName: string;
     email: string;
@@ -16,6 +18,7 @@ export type User = {
     profilePic: string;
     createdAt: string;
     updatedAt: string;
+    lastMessage?: Message;
 }
 
 export enum AuthStatus {

@@ -1,10 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getChatUsers } from "./chatThunks";
 import { User } from "@/features/auth/types/auth.types";
 import { ChatStatus } from "../types/chat";
 import { Message } from "../types/chat";
-import { getChatMessages } from "./chatThunks";
-import { sendMessage } from "./chatThunks";
+import { getChatMessages, getChatUser, getChatUsers, sendMessage } from "./chatThunks";
+
 
 export interface ChatState {
     // users
@@ -16,6 +15,12 @@ export interface ChatState {
     messages: Array<Message>;
     isLoadingMessages: ChatStatus;
     errorMessages: string | null;
+    isSendingMessage: boolean;
+
+    // chat user
+    chatUser: User | null;
+    isLoadingChatUser: ChatStatus;
+    errorChatUser: string | null;
 }
 
 const initialState: ChatState = {
@@ -25,6 +30,10 @@ const initialState: ChatState = {
     messages: [],
     isLoadingMessages: ChatStatus.IDLE,
     errorMessages: null,
+    isSendingMessage: false,
+    chatUser: null,
+    isLoadingChatUser: ChatStatus.IDLE,
+    errorChatUser: null,
 }
 
 const chatSlice = createSlice({
@@ -48,7 +57,7 @@ const chatSlice = createSlice({
             })
             .addCase(getChatUsers.rejected, (state, action) => {
                 state.isLoadingUsers = ChatStatus.FAILED;
-                state.errorUsers = action.error.message as string;
+                state.errorUsers = action.payload as string;
             })
             //get messages
             .addCase(getChatMessages.pending, (state) => {
@@ -61,20 +70,33 @@ const chatSlice = createSlice({
             })
             .addCase(getChatMessages.rejected, (state, action) => {
                 state.isLoadingMessages = ChatStatus.FAILED;
-                state.errorMessages = action.error.message as string;
+                state.errorMessages = action.payload as string;
             })
             //send message
             .addCase(sendMessage.pending, (state) => {
-                // state.isLoadingMessages = ChatStatus.LOADING;
+                state.isSendingMessage = true;
                 state.errorMessages = null;
             })
             .addCase(sendMessage.fulfilled, (state, action) => {
-                // state.isLoadingMessages = ChatStatus.SUCCEEDED;
+                state.isSendingMessage = false;
                 state.messages.push(action.payload);
             })
             .addCase(sendMessage.rejected, (state, action) => {
-                //state.isLoadingMessages = ChatStatus.FAILED;
-                state.errorMessages = action.error.message as string;
+                state.isSendingMessage = false;
+                state.errorMessages = action.payload as string;
+            })
+            //chat user
+            .addCase(getChatUser.pending, (state) => {
+                state.isLoadingChatUser = ChatStatus.LOADING;
+                state.errorChatUser = null;
+            })
+            .addCase(getChatUser.fulfilled, (state, action) => {
+                state.chatUser = action.payload;
+                state.isLoadingChatUser = ChatStatus.SUCCEEDED;
+            })
+            .addCase(getChatUser.rejected, (state, action) => {
+                state.isLoadingChatUser = ChatStatus.FAILED;
+                state.errorChatUser = action.payload as string;
             })
 
     }

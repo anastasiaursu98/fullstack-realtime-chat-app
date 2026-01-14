@@ -1,6 +1,6 @@
 import { Message } from "../../../types/chat";
 import { MessageBubble } from "./MessageBubble";
-import { NoChatMessages } from "./NoChatMessages";
+import { NoChatMessages } from "../../../../../components/shared/NoChatMessages";
 import { useAppSelector } from "@/lib/store";
 
 export interface ChatMessagesProps {
