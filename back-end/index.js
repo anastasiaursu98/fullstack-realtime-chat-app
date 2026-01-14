@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
     cors({
-        origin: "http://localhost:3000",
+        origin: "https://fullstack-realtime-chat-app-7j7n.vercel.app",
         credentials: true,
     })
 );
