@@ -7,11 +7,14 @@ import { useEffect } from "react";
 import { useParams, usePathname } from "next/navigation";
 import { getChatUser } from "@/features/chat/slices/chatThunks";
 import { ROUTES } from "@/constants/routes";
+import { ChatStatus } from "@/features/chat/types/chat";
+import { ChatHeaderSkeleton } from "./ChatHeaderSkeleton";
 
 export const ChatHeader = () => {
     const { id: userId } = useParams<{ id: string }>();
     const dispatch = useAppDispatch();
     const chatUser = useAppSelector((state) => state.chat.chatUser);
+    const isLoadingChatUser = useAppSelector((state) => state.chat.isLoadingChatUser) === ChatStatus.LOADING;
     const onlineUsers = useAppSelector((state) => state.auth.onlineUsers);
     const online = onlineUsers?.includes(chatUser?._id || "");
 
@@ -29,18 +32,19 @@ export const ChatHeader = () => {
                 <div className="flex items-center gap-2 ml-6">
                     {!isProfilePage && chatUser && (
                         <>
-
-                            <div className="relative flex-shrink-0">
-                                <UserAvatar
-                                    src={chatUser.profilePic || ""}
-                                    alt={chatUser.fullName}
-                                    size={40}
-                                    isOnline={online}
-                                />
-                            </div>
-                            <div>
-                                <p className="text-sm font-medium">{chatUser.fullName}</p>
-                            </div>
+                            {isLoadingChatUser ? <ChatHeaderSkeleton /> : <>
+                                <div className="relative flex-shrink-0">
+                                    <UserAvatar
+                                        src={chatUser.profilePic || ""}
+                                        alt={chatUser.fullName}
+                                        size={40}
+                                        isOnline={online}
+                                    />
+                                </div>
+                                <div>
+                                    <p className="text-sm font-medium">{chatUser.fullName}</p>
+                                </div>
+                            </>}
                         </>
                     )}
                 </div>

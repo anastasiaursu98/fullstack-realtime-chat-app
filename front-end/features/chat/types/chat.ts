@@ -3,7 +3,7 @@ export interface Message {
     senderId: string;
     receiverId: string;
     text: string;
-    image: string;
+    image?: string;
     createdAt: string;
     updatedAt: string;
 }
@@ -18,5 +18,5 @@ export enum ChatStatus {
 export type SendMessagePayload = {
     text: string;
     chatId: string;
-    image?: string;
+    image?: string | null;
 }

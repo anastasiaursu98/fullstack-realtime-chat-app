@@ -1,4 +1,4 @@
 export * from './ChatHeader';
 export * from './ChatHeaderMenu';
-export * from './ChatSidebar';
-export * from './ChatView';
+export * from './chat-sidebar';
+export * from './chat-view';

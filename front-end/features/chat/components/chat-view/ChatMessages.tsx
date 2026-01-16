@@ -5,30 +5,14 @@ import { useAppSelector } from "@/lib/store";
 
 export interface ChatMessagesProps {
     messages: Message[];
-    isLoading?: boolean;
+    isLoading: boolean;
 }
 
 export const ChatMessages = ({
     messages,
-    isLoading = false,
+    isLoading,
 }: ChatMessagesProps) => {
     const user = useAppSelector((state) => state.auth.user);
-
-    if (isLoading) {
-        return (
-            <div className="flex justify-center items-center h-full">
-                <p className="text-gray-500">Loading messages...</p>
-            </div>
-        );
-    }
-
-    if (messages?.length === 0) {
-        return (
-            <div className="flex flex-col items-center justify-center h-full text-gray-500">
-                <NoChatMessages />
-            </div>
-        );
-    }
 
     return (
         <div className="flex flex-col gap-2">

@@ -5,7 +5,6 @@ import { Label } from "@/components/ui/label";
 import { Camera } from "lucide-react";
 import { useState } from "react";
 import { useAppSelector } from "@/lib/store";
-import { RootState } from "@/lib/store";;
 import { updateProfilePic } from "@/features/auth/slices/authThunks";
 import { useAppDispatch } from "@/lib/store";
 import { toast } from "sonner";

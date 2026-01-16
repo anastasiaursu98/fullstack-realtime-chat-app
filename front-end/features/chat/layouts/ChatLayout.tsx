@@ -2,15 +2,15 @@
 
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { ChatHeader } from "@/features/chat/components/ChatHeader";
-import { ChatSidebar } from "@/features/chat/components/ChatSidebar/ChatSidebar";
+import { ChatSidebar } from "@/features/chat/components/chat-sidebar/ChatSidebar";
 
 export function ChatLayout({ children }: { children: React.ReactNode }) {
     return (
         <SidebarProvider>
             <ChatSidebar />
-            <SidebarInset>
+            <SidebarInset className="h-screen overflow-hidden flex flex-col">
                 <ChatHeader />
-                <main className="flex-1 flex flex-col overflow-y-auto py-8 px-2 md:px-4 lg:px-12">
+                <main className="flex-1 flex flex-col overflow-hidden py-8">
                     {children}
                 </main>
             </SidebarInset>

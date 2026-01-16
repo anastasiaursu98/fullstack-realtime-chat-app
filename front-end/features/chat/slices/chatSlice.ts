@@ -46,7 +46,7 @@ const chatSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            // users
+            //get users
             .addCase(getChatUsers.pending, (state) => {
                 state.isLoadingUsers = ChatStatus.LOADING;
                 state.errorUsers = null;

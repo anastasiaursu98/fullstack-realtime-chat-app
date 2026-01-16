@@ -52,7 +52,7 @@ export const ChatListItem = ({
                     </span>
                 </div>
                 <div className="flex items-center gap-1 flex-shrink-0 ml-2">
-                    <span className="text-xs text-gray-500">{user.lastMessage?.text}</span>
+                    <span className="text-xs text-gray-500">{user.lastMessage?.text?.substring(0, 15)}</span>
                     <span className="text-xs text-gray-500">{time}</span>
                 </div>
             </div>

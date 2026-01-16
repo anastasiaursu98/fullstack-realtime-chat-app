@@ -5,7 +5,6 @@ import { useSocket } from "@/features/chat/providers/SocketProvider";
 import { getChatMessages, sendMessage } from "../slices/chatThunks";
 import { addMessage } from "../slices/chatSlice";
 import { Message } from "../types/chat";
-
 /**
  * Custom hook for managing chat room functionality
  * Handles real-time message updates via Socket.IO and message sending
@@ -18,11 +17,9 @@ import { Message } from "../types/chat";
 export const useChatRoom = () => {
     const dispatch = useAppDispatch();
     const messages = useAppSelector((state) => state.chat.messages);
+    const isLoadingMessages = useAppSelector((state) => state.chat.isLoadingMessages);
     const { socket } = useSocket();
     const { id: chatId } = useParams<{ id: string }>();
-
-
-    console.log(chatId);
 
     useEffect(() => {
         if (!socket) return;
@@ -32,6 +29,10 @@ export const useChatRoom = () => {
             if (message.senderId === chatId) {
                 dispatch(addMessage(message));
             }
+            const audio = new Audio("/sounds/notification.mp3");
+            audio.play()
+                .then(() => console.log("Audio played successfully"))
+                .catch(e => console.error("Audio play failed:", e));
         };
 
         socket.on("newMessage", handleNewMessage);
@@ -48,16 +49,9 @@ export const useChatRoom = () => {
     }, [dispatch, chatId]);
 
 
-    const handleSendMessage = useCallback(
-        (message: string) => {
-            if (!chatId) return;
-            dispatch(sendMessage({ text: message, chatId }));
-        },
-        [dispatch, chatId]
-    );
-
     return {
         messages,
-        sendMessage: handleSendMessage
+        chatId,
+        isLoadingMessages
     };
 };
