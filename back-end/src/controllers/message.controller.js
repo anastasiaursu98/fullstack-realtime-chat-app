@@ -50,8 +50,31 @@ export const getUsersForSideBar = async (req, res) => {
             },
 
             {
+                $lookup: {
+                    from: "messages",
+                    let: { userId: "$_id" },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $and: [
+                                        { $eq: ["$senderId", "$$userId"] },
+                                        { $eq: ["$receiverId", loggedInUserId] },
+                                        { $eq: ["$isRead", false] }
+                                    ]
+                                }
+                            }
+                        },
+                        { $count: "count" }
+                    ],
+                    as: "unreadMessagesCount"
+                }
+            },
+
+            {
                 $addFields: {
-                    lastMessage: { $arrayElemAt: ["$lastMessage", 0] }
+                    lastMessage: { $arrayElemAt: ["$lastMessage", 0] },
+                    unreadMessagesCount: { $ifNull: [{ $arrayElemAt: ["$unreadMessagesCount.count", 0] }, 0] }
                 }
             },
 
@@ -148,3 +171,34 @@ export const getChatUser = async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 }
+
+export const markMessagesAsRead = async (req, res) => {
+    try {
+        const { chatUserId } = req.params; // userul cu care avem conversația
+        const myId = req.user.id;
+
+        //mark all messages from chatUserId as read
+        const result = await Message.updateMany(
+            { senderId: chatUserId, receiverId: myId, isRead: false },
+            { $set: { isRead: true } }
+        );
+
+        // Notify the sender that the messages have been read
+        const senderSocketId = getReceiverSocketId(chatUserId);
+        if (senderSocketId) {
+            io.to(senderSocketId).emit("messagesRead", {
+                readerId: myId,                 // the id of the user who read the messages
+                count: result.modifiedCount,    // the number of messages that were read
+            });
+        }
+
+        res.status(200).json({
+            message: "Messages marked as read",
+            modifiedCount: result.modifiedCount
+        });
+
+    } catch (error) {
+        console.log("Error marking messages as read:", error.message);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
