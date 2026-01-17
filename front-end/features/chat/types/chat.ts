@@ -6,6 +6,7 @@ export interface Message {
     image?: string;
     createdAt: string;
     updatedAt: string;
+    isRead: boolean;
 }
 
 export enum ChatStatus {

@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { User } from "@/features/auth/types/auth.types";
 import { ChatStatus } from "../types/chat";
 import { Message } from "../types/chat";
-import { getChatMessages, getChatUser, getChatUsers, sendMessage } from "./chatThunks";
+import { getChatMessages, getChatUser, getChatUsers, markMessagesAsRead, sendMessage } from "./chatThunks";
 
 
 export interface ChatState {
@@ -97,6 +97,26 @@ const chatSlice = createSlice({
             .addCase(getChatUser.rejected, (state, action) => {
                 state.isLoadingChatUser = ChatStatus.FAILED;
                 state.errorChatUser = action.payload as string;
+            })
+            //mark messages as read
+            .addCase(markMessagesAsRead.pending, (state) => {
+                state.isLoadingMessages = ChatStatus.LOADING;
+                state.errorMessages = null;
+            })
+            .addCase(markMessagesAsRead.fulfilled, (state, action) => {
+                const readerId = action.payload.readerId;
+
+                //mark messages as read
+                state.messages = state.messages.map((msg) =>
+                    msg.senderId === readerId && !msg.isRead
+                        ? { ...msg, isRead: true }
+                        : msg
+                )
+                state.isLoadingMessages = ChatStatus.SUCCEEDED;
+            })
+            .addCase(markMessagesAsRead.rejected, (state, action) => {
+                state.isLoadingMessages = ChatStatus.FAILED;
+                state.errorMessages = action.payload as string;
             })
 
     }

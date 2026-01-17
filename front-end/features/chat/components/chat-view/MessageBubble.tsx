@@ -55,7 +55,7 @@ export const MessageBubble = ({
                     <span className="mt-1 text-xs text-gray-500">
                         {time}
                     </span>
-                    {isMine && <CheckCheck className="h-4 w-4 text-gray-500" />}
+                    {isMine && <CheckCheck className={cn("h-4 w-4 text-gray-500", message.isRead ? "text-blue-500" : "text-gray-500")} />}
                 </div>
             )}
         </div>

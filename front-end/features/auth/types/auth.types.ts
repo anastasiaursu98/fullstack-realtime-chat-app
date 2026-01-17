@@ -19,6 +19,7 @@ export type User = {
     createdAt: string;
     updatedAt: string;
     lastMessage?: Message;
+    unreadMessagesCount: number;
 }
 
 export enum AuthStatus {
