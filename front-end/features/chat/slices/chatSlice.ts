@@ -42,6 +42,37 @@ const chatSlice = createSlice({
     reducers: {
         addMessage: (state, action) => {
             state.messages.push(action.payload);
+        },
+        updateUserWithNewMessage: (state, action) => {
+            const { message, shouldIncrement } = action.payload;
+            const senderId = message.senderId;
+
+            const userIndex = state.users.findIndex((user) => user._id === senderId);
+
+            if (userIndex !== -1) {
+                const user = state.users[userIndex];
+
+                // Update unread count
+                if (shouldIncrement) {
+                    user.unreadMessagesCount = (user.unreadMessagesCount || 0) + 1;
+                }
+
+                // Update last message
+                user.lastMessage = message;
+
+                // Move user to the top
+                state.users.splice(userIndex, 1);
+                state.users.unshift(user);
+            }
+        },
+        setMessagesAsRead: (state, action) => {
+            const { readerId } = action.payload;
+            state.messages = state.messages.map((msg) => {
+                if (msg.receiverId === readerId) {
+                    return { ...msg, isRead: true };
+                }
+                return msg;
+            })
         }
     },
     extraReducers: (builder) => {
@@ -112,6 +143,13 @@ const chatSlice = createSlice({
                         ? { ...msg, isRead: true }
                         : msg
                 )
+
+                // Update user's unread count to 0
+                const userIndex = state.users.findIndex((user) => user._id === readerId);
+                if (userIndex !== -1) {
+                    state.users[userIndex].unreadMessagesCount = 0;
+                }
+
                 state.isLoadingMessages = ChatStatus.SUCCEEDED;
             })
             .addCase(markMessagesAsRead.rejected, (state, action) => {
@@ -122,5 +160,5 @@ const chatSlice = createSlice({
     }
 })
 
-export const { addMessage } = chatSlice.actions;
+export const { addMessage, updateUserWithNewMessage, setMessagesAsRead } = chatSlice.actions;
 export default chatSlice.reducer

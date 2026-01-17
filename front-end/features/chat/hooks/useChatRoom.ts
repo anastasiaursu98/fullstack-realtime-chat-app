@@ -3,16 +3,8 @@ import { useParams } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/store";
 import { useSocket } from "@/features/chat/providers/SocketProvider";
 import { getChatMessages, markMessagesAsRead } from "../slices/chatThunks";
-import { addMessage } from "../slices/chatSlice";
+import { addMessage, setMessagesAsRead } from "../slices/chatSlice";
 import { Message } from "../types/chat";
-/**
- * Custom hook for managing chat room functionality
- * Handles real-time message updates via Socket.IO and message sending
- * 
- * @returns {Object} Chat room utilities
- * @returns {Message[]} messages - Array of chat messages
- * @returns {Function} sendMessage - Function to send a new message
- */
 
 export const useChatRoom = () => {
     const dispatch = useAppDispatch();
@@ -25,19 +17,32 @@ export const useChatRoom = () => {
         if (!socket) return;
 
         const handleNewMessage = (message: Message) => {
+            // Check if loop is active chat
+            const isCurrentChat = message.senderId === chatId;
 
-            if (message.senderId === chatId) {
+            if (isCurrentChat) {
                 dispatch(addMessage(message));
+                // Mark as read immediately on backend if we are in the chat
+                dispatch(markMessagesAsRead(chatId));
             }
+
             const audio = new Audio("/sounds/notification.mp3");
             audio.play()
                 .then(() => console.log("Audio played successfully"))
                 .catch(e => console.error("Audio play failed:", e));
         };
 
+        const handleMarkMessagesAsRead = ({ readerId }: { readerId: string }) => {
+            if (readerId === chatId) {
+                dispatch(setMessagesAsRead({ readerId }));
+            }
+        }
+
+        socket.on("messagesRead", handleMarkMessagesAsRead);
         socket.on("newMessage", handleNewMessage);
 
         return () => {
+            socket.off("messagesRead", handleMarkMessagesAsRead);
             socket.off("newMessage", handleNewMessage);
         };
     }, [socket, dispatch, chatId]);
